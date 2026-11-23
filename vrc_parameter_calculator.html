@@ -47,10 +47,10 @@
 <body>
 <main>
   <h1>VRC Parameter Calculator</h1>
-  <p>VRCのパラメータで、型・ビット数・符号を指定したときに表現できる値を調べるページです。</p>
+  <p>VRCのパラメーターの型・ビット数・符号を指定したときに表現できる値を確認できます。</p>
 
   <section aria-label="設定">
-    <h2>設定</h2>
+    <h2>パラメーター設定</h2>
     <div class="controls">
       <div>
         <span class="control-title">型</span>
@@ -102,7 +102,7 @@
   </section>
 
   <footer>
-    このページはVRChatのExpression Parametersの同期時の値を計算するものです。Floatは通常の32bit浮動小数点数とは異なります。<br>
+    このページはVRChatのExpression Parameters同期時の値を計算するものです。Floatは通常の32bit浮動小数点数とは異なります。<br>
     参考：<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">VRChat公式ドキュメント</a>
   </footer>
   <noscript><p>このページの計算機能にはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</p></noscript>
@@ -162,7 +162,7 @@
     get('details').hidden = type !== 'float';
     get('range').textContent = showNumber(result.min) + ' ～ ' + showNumber(result.max);
     get('smallest').textContent = result.smallest;
-    get('details').textContent = '※「表現できる最小値」は0より大きい最小の値です。Floatの小数は約12桁まで表示しています。';
+    get('details').textContent = '※「表現できる最小値」は0より大きい最小の値です。Floatの小数は12桁まで表示しています。';
   }
 
   get('type-int').addEventListener('click', function () { type = 'int'; render(); });
