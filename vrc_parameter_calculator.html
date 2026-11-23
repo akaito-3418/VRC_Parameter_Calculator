@@ -1,22 +1,196 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>VRC Parameter Calculator | ビット数・値域計算</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VRC Parameter Calculator</title>
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--card:#141d31;--card2:#1b2740;--line:#34415a;--txt:#f4f7fe;--muted:#aab9cf;--accent:#76e4cb;--blue:#8aaeff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -15%,#223a57 0%,var(--bg) 55%);color:var(--txt);font-family:system-ui,-apple-system,'Segoe UI',sans-serif;min-height:100vh}main{max-width:890px;margin:auto;padding:56px 20px 70px}.eyebrow{color:var(--accent);font-size:.75rem;font-weight:800;letter-spacing:.17em}h1{font-size:clamp(2rem,5vw,3rem);letter-spacing:-.045em;margin:12px 0}header p{color:var(--muted);line-height:1.7;margin-bottom:30px}.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 14px 45px #0002}.controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}label.caption{display:block;color:var(--muted);font-size:.84rem;font-weight:700;margin:0 0 9px}.switches{display:flex;gap:7px;background:#0c1425;padding:5px;border-radius:12px;height:48px}.switches button{border:0;color:var(--muted);background:transparent;border-radius:9px;font-size:1rem;font-weight:750;flex:1;cursor:pointer}.switches button.active{color:#071522;background:var(--accent)}.switches button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}.bitinput{display:flex;align-items:center;gap:7px}.bitinput button{width:45px;height:48px;border:1px solid var(--line);color:var(--txt);background:var(--card2);border-radius:12px;cursor:pointer;font-size:1.3rem}.bitinput input{min-width:0;width:100%;height:48px;background:#0d1628;border:1px solid var(--line);border-radius:12px;color:var(--txt);text-align:center;font-size:1.2rem;font-variant-numeric:tabular-nums}input::-webkit-inner-spin-button{-webkit-appearance:none}input[type=number]{-moz-appearance:textfield}.hint{margin-top:15px;color:var(--muted);font-size:.85rem;line-height:1.6}.results{margin-top:20px}.resulttop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:15px}.resulttop h2{font-size:1.05rem;margin:0}.chip{font-size:.74rem;color:var(--accent);background:#133e42;border:1px solid #2b6462;padding:6px 10px;border-radius:999px;font-weight:700}.range{display:grid;grid-template-columns:1fr 1fr;gap:12px}.valcard{padding:18px;border-radius:14px;background:var(--card2);border:1px solid #35445d;min-width:0}.valcard small{display:block;color:var(--muted);font-size:.82rem}.valcard strong{display:block;margin:10px 0 0;overflow-wrap:anywhere;font-size:clamp(1.4rem,3.4vw,2.15rem);font-variant-numeric:tabular-nums;letter-spacing:-.04em}.valcard strong.positive{color:var(--accent)}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.metric{padding:17px 18px;border:1px solid var(--line);border-radius:14px}.metric small{display:block;color:var(--muted);font-size:.78rem;margin-bottom:7px}.metric b{font-size:1.2rem;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.barrow{display:flex;justify-content:space-between;color:var(--muted);font-size:.86rem;margin:23px 0 9px}.bitbar{display:flex;gap:4px}.bitbar span{display:block;flex:1;height:20px;border-radius:4px;background:var(--accent)}.bitbar span.sign{background:var(--blue)}.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);font-size:.79rem;margin-top:10px}.legend i{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:5px;background:var(--accent)}.legend i.sign{background:var(--blue)}.note{background:#102c34;border:1px solid #28515b;color:#c8f6ed;padding:15px;border-radius:12px;font-size:.88rem;line-height:1.75;margin-top:20px}.examples{margin-top:28px}.examples h2{font-size:1.1rem}.preset{display:flex;gap:9px;flex-wrap:wrap}.preset button{background:#1c2a42;border:1px solid #40516b;color:var(--txt);padding:11px 14px;border-radius:10px;cursor:pointer}.preset button:hover{border-color:var(--accent)}.footer{font-size:.78rem;line-height:1.8;color:var(--muted);margin-top:30px}.footer a{color:var(--accent)}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}@media(max-width:640px){main{padding:32px 14px 50px}.panel{padding:18px}.controls{grid-template-columns:1fr;gap:14px}.range,.metrics{gap:8px}.valcard{padding:13px}.metric{padding:13px}.valcard strong{font-size:1.5rem}}
+  * { box-sizing: border-box; border-radius: 0 !important; }
+  body { margin: 0; background: #fff; color: #000; font: 16px/1.6 Arial, "Meiryo", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 18px 16px 48px; }
+  h1 { margin: 0 0 6px; font-size: 28px; }
+  h2 { margin: 0 0 12px; font-size: 20px; }
+  p { margin: 8px 0 18px; }
+  section { margin: 20px 0; padding: 14px; border: 1px solid #000; }
+  .controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .control-title { display: block; margin-bottom: 6px; font-weight: bold; font-size: 14px; }
+  .choices, .bit-control { display: flex; gap: 4px; }
+  button, input { font: inherit; }
+  button { cursor: pointer; padding: 6px 10px; border: 1px solid #000; background: #eee; color: #000; }
+  button:hover { background: #ddd; }
+  button.selected, button.selected:hover { background: #000; color: #fff; }
+  button:focus-visible, input:focus-visible { outline: 2px solid #000; outline-offset: 2px; }
+  .choices button { flex: 1; }
+  .bit-control input { width: 100%; min-width: 0; text-align: center; padding: 6px 0; border: 1px solid #000; color: #000; background: #fff; }
+  .bit-control button { flex: 0 0 36px; padding: 6px 0; }
+  .small { font-size: 13px; }
+  .help { margin: 12px 0 0; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; border: 1px solid #000; padding: 10px 12px; }
+  th { width: 44%; font-size: 14px; font-weight: normal; }
+  td { font-size: 21px; font-weight: bold; overflow-wrap: anywhere; }
+  .status { margin: 0 0 10px; font-size: 13px; }
+  [hidden] { display: none !important; }
+  #details { margin: 12px 0 0; font-size: 13px; }
+  .presets { display: flex; flex-wrap: wrap; gap: 7px; }
+  .presets button { font-size: 13px; }
+  footer { border-top: 1px solid #000; margin-top: 24px; padding-top: 10px; font-size: 12px; }
+  a { color: #000; }
+  @media (max-width: 600px) {
+    .controls { grid-template-columns: 1fr; gap: 14px; }
+    table th { width: 48%; }
+    table td { font-size: 18px; }
+    h1 { font-size: 25px; }
+  }
 </style>
-</head><body><main>
-<header><div class="eyebrow">VRCHAT AVATAR / EXPRESSION PARAMETERS</div><h1>Parameter Calculator</h1><p>VRCSDKのAdvanced Options（Bit Width・Representation）に対応。<br>パラメータの種類・ビット数・符号を選ぶと、値域と精度を自動計算します。</p></header>
-<section class="panel" aria-label="パラメータ設定"><div class="controls">
-<div><label class="caption">パラメータの種類</label><div class="switches" role="group" aria-label="型"><button type="button" id="int" class="active" aria-pressed="true">Int</button><button type="button" id="float" aria-pressed="false">Float</button></div></div>
-<div><label class="caption" for="bits">ビット数</label><div class="bitinput"><button type="button" id="minus" aria-label="ビット数を減らす">−</button><input id="bits" type="number" min="2" max="8" step="1" value="8" inputmode="numeric"><button type="button" id="plus" aria-label="ビット数を増やす">＋</button></div></div>
-<div><label class="caption">符号（Representation）</label><div class="switches" role="group" aria-label="符号"><button type="button" id="unsigned" class="active" aria-pressed="true">なし</button><button type="button" id="signed" aria-pressed="false">あり</button></div></div>
-</div><div class="hint">VRChatの同期パラメータで設定可能な <b>2～8 bit</b> に対応。Floatは符号あり／なしで値の刻み幅も変わります。最小の正の値は量子化後に0より大きく表現できる最小値です。</div></section>
-<section class="panel results" aria-live="polite"><div class="resulttop"><h2>計算結果</h2><span class="chip" id="state">Int · 8 bit · 符号なし</span></div><div class="range"><div class="valcard"><small>最小値（MIN）</small><strong id="min">0</strong></div><div class="valcard"><small>最大値（MAX）</small><strong class="positive" id="max">255</strong></div></div><div class="metrics"><div class="metric"><small id="countLabel">表現可能な整数の個数</small><b id="count">256</b></div><div class="metric"><small id="stepLabel">値の間隔（刻み幅）</small><b id="step">1</b></div><div class="metric"><small>0より大きい最小値（最小の正の値）</small><b id="smallest">1</b></div></div><div class="barrow"><span>ビット構成のイメージ</span><span id="bitcaption">8 bits</span></div><div class="bitbar" id="bitbar" aria-hidden="true"></div><div class="legend"><span><i></i>数値用ビット</span><span><i class="sign"></i>符号ビット（Intで符号ありの場合）</span></div><div class="note" id="info"></div></section>
-<section class="examples"><h2>クイック設定</h2><div class="preset"><button data-t="int" data-b="8" data-s="false">Int · 8bit · 符号なし</button><button data-t="int" data-b="4" data-s="true">Int · 4bit · 符号あり</button><button data-t="float" data-b="8" data-s="true">Float · 8bit · 符号あり</button><button data-t="float" data-b="4" data-s="false">Float · 4bit · 符号なし</button></div></section>
-<p class="footer">※ このツールはExpression Parametersの<strong>同期時</strong>の表現を計算します。FloatはIEEE 754の浮動小数点ではなくVRCSDKの固定範囲量子化です。ローカルのAnimatorではFloatは通常の32bit浮動小数点として扱われます。<br>参照：<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener">VRChat公式 / Animator Parameters</a>・<a href="https://creators.vrchat.com/avatars/expression-menu-and-controls/" target="_blank" rel="noopener">Expressions Menu and Controls</a></p>
-</main><script>
-(()=>{'use strict';let type='int',signed=false,bits=8;const $=id=>document.getElementById(id);function fmt(x){return Number(x).toLocaleString('ja-JP',{maximumFractionDigits:12})}function show(){bits=Math.max(2,Math.min(8,Math.trunc(Number(bits)||2)));$('bits').value=bits;for(const t of ['int','float']){$(t).classList.toggle('active',type===t);$(t).setAttribute('aria-pressed',String(type===t))}for(const s of ['signed','unsigned']){let on=(s==='signed')===signed;$(s).classList.toggle('active',on);$(s).setAttribute('aria-pressed',String(on))}let min,max,count,step,description,exact;if(type==='int'){min=signed?-(2**(bits-1)):0;max=signed?2**(bits-1)-1:2**bits-1;count=2**bits;step=1;exact='1';description=`${bits}bitの${signed?'符号付き':'符号なし'}整数。${signed?'2の補数に基づき、負数と正数を扱えます。':'0から最大値までの整数を表現します。'}`}else{min=signed?-1:0;max=1;const d=signed?(2**(bits-1)-1):(2**bits-1);step=1/d;count=signed?2*d+1:d+1;exact=`1 / ${d}`;description=`${bits}bitの${signed?'符号付き':'符号なし'}Float。${signed?'−1、0、1':'0、1'}を正確に表現でき、${signed?'正負対称の':'0～1の'}離散値に量子化されます。`;} $('state').textContent=`${type==='int'?'Int':'Float'} · ${bits} bit · 符号${signed?'あり':'なし'}`;$('min').textContent=fmt(min);$('max').textContent=fmt(max);$('countLabel').textContent=type==='int'?'表現可能な整数の個数':'表現可能な異なる値の個数';$('count').textContent=fmt(count);$('stepLabel').textContent='値の間隔（刻み幅）';$('step').textContent=type==='int'?'1':exact;$('smallest').textContent=type==='int'?'1':`${fmt(step)} （≈ ${exact}）`;$('bitcaption').textContent=`${bits} bits`;$('bitbar').replaceChildren(...Array.from({length:bits},(_,i)=>{let span=document.createElement('span');if(type==='int'&&signed&&i===0)span.className='sign';return span}));$('info').textContent=description+(type==='float'&&signed?' ※ 符号付きFloatは1個のコードが重複／端点に割り当てられる可能性があるため、異なる値の個数は全ビットパターン数より1少なくなります。':'')}for(const b of document.querySelectorAll('.bitbar + .legend span:last-child'))b.style.opacity=type==='int'&&signed?'1':'.42';} $('int').onclick=()=>{type='int';signed=false;show()};$('float').onclick=()=>{type='float';signed=true;show()};$('signed').onclick=()=>{signed=true;show()};$('unsigned').onclick=()=>{signed=false;show()};$('minus').onclick=()=>{bits--;show()};$('plus').onclick=()=>{bits++;show()};$('bits').addEventListener('input',e=>{if(e.target.value!==''){bits=Number(e.target.value);show()}});for(let b of document.querySelectorAll('.preset button'))b.onclick=()=>{type=b.dataset.t;bits=Number(b.dataset.b);signed=b.dataset.s==='true';show();document.querySelector('.results').scrollIntoView({behavior:'smooth',block:'nearest'})};show()})();
-</script></body></html>
+</head>
+<body>
+<main>
+  <h1>VRC Parameter Calculator</h1>
+  <p>VRCのパラメータで、型・ビット数・符号を指定したときに表現できる値を調べるページです。</p>
+
+  <section aria-label="設定">
+    <h2>設定</h2>
+    <div class="controls">
+      <div>
+        <span class="control-title">型</span>
+        <div class="choices" role="group" aria-label="型">
+          <button type="button" id="type-int" class="selected" aria-pressed="true">Int</button>
+          <button type="button" id="type-float" aria-pressed="false">Float</button>
+        </div>
+      </div>
+      <div>
+        <label class="control-title" for="bits">ビット数</label>
+        <div class="bit-control">
+          <button type="button" id="minus" aria-label="1ビット減らす">−</button>
+          <input id="bits" type="number" min="2" max="8" step="1" value="8" inputmode="numeric">
+          <button type="button" id="plus" aria-label="1ビット増やす">＋</button>
+        </div>
+      </div>
+      <div>
+        <span class="control-title">符号</span>
+        <div class="choices" role="group" aria-label="符号">
+          <button type="button" id="unsigned" class="selected" aria-pressed="true">なし</button>
+          <button type="button" id="signed" aria-pressed="false">あり</button>
+        </div>
+      </div>
+    </div>
+    <p class="small help">ビット数は2～8の範囲で設定できます。</p>
+  </section>
+
+  <section aria-label="計算結果">
+    <h2>計算結果</h2>
+    <p class="status" id="state">Int / 8bit / 符号なし</p>
+    <table>
+      <tbody>
+        <tr><th scope="row">表現できる値の数</th><td id="count">256</td></tr>
+        <tr id="range-row"><th scope="row">表現可能な幅</th><td id="range">0 ～ 255</td></tr>
+        <tr id="smallest-row" hidden><th scope="row">表現できる最小値</th><td id="smallest">約 0.003921568627</td></tr>
+      </tbody>
+    </table>
+    <p id="details" hidden>※「表現できる最小値」は、0より大きい最小の値を指します。</p>
+  </section>
+
+  <section aria-label="クイック設定">
+    <h2>クイック設定</h2>
+    <div class="presets">
+      <button type="button" data-type="int" data-bits="8" data-signed="false">Int / 8bit / 符号なし</button>
+      <button type="button" data-type="int" data-bits="4" data-signed="true">Int / 4bit / 符号あり</button>
+      <button type="button" data-type="float" data-bits="8" data-signed="true">Float / 8bit / 符号あり</button>
+      <button type="button" data-type="float" data-bits="4" data-signed="false">Float / 4bit / 符号なし</button>
+    </div>
+  </section>
+
+  <footer>
+    このページはVRChatのExpression Parametersの同期時の値を計算するものです。Floatは通常の32bit浮動小数点数とは異なります。<br>
+    参考：<a href="https://creators.vrchat.com/avatars/animator-parameters/" target="_blank" rel="noopener noreferrer">VRChat公式ドキュメント</a>
+  </footer>
+  <noscript><p>このページの計算機能にはJavaScriptが必要です。ブラウザでJavaScriptを有効にしてください。</p></noscript>
+</main>
+<script>
+(function () {
+  'use strict';
+
+  var type = 'int';
+  var bits = 8;
+  var signed = false;
+
+  function get(id) { return document.getElementById(id); }
+  function clampBits(value) {
+    var number = Number(value);
+    if (!Number.isFinite(number)) return 8;
+    return Math.max(2, Math.min(8, Math.trunc(number)));
+  }
+  function showNumber(value) {
+    return value.toLocaleString('ja-JP');
+  }
+  function calculate() {
+    var min, max, count, smallest;
+    if (type === 'int') {
+      min = signed ? -(2 ** (bits - 1)) : 0;
+      max = signed ? (2 ** (bits - 1)) - 1 : (2 ** bits) - 1;
+      count = 2 ** bits;
+      smallest = '1';
+    } else {
+      min = signed ? -1 : 0;
+      max = 1;
+      var denominator = signed ? (2 ** (bits - 1)) - 1 : (2 ** bits) - 1;
+      count = signed ? denominator * 2 + 1 : denominator + 1;
+      // 小数は循環することがあるので「約」を付ける。
+      smallest = '約 ' + (1 / denominator).toFixed(12).replace(/0+$/, '').replace(/\.$/, '');
+    }
+    return { min: min, max: max, count: count, smallest: smallest };
+  }
+  function setSelected(buttonId, selected) {
+    var button = get(buttonId);
+    button.classList.toggle('selected', selected);
+    button.setAttribute('aria-pressed', String(selected));
+  }
+  function render() {
+    bits = clampBits(bits);
+    get('bits').value = bits;
+    setSelected('type-int', type === 'int');
+    setSelected('type-float', type === 'float');
+    setSelected('unsigned', !signed);
+    setSelected('signed', signed);
+
+    var result = calculate();
+    get('state').textContent = (type === 'int' ? 'Int' : 'Float') + ' / ' + bits + 'bit / 符号' + (signed ? 'あり' : 'なし');
+    get('count').textContent = showNumber(result.count);
+    get('range-row').hidden = type !== 'int';
+    get('smallest-row').hidden = type !== 'float';
+    get('details').hidden = type !== 'float';
+    get('range').textContent = showNumber(result.min) + ' ～ ' + showNumber(result.max);
+    get('smallest').textContent = result.smallest;
+    get('details').textContent = '※「表現できる最小値」は0より大きい最小の値です。Floatの小数は約12桁まで表示しています。';
+  }
+
+  get('type-int').addEventListener('click', function () { type = 'int'; render(); });
+  get('type-float').addEventListener('click', function () { type = 'float'; render(); });
+  get('unsigned').addEventListener('click', function () { signed = false; render(); });
+  get('signed').addEventListener('click', function () { signed = true; render(); });
+  get('minus').addEventListener('click', function () { bits -= 1; render(); });
+  get('plus').addEventListener('click', function () { bits += 1; render(); });
+  get('bits').addEventListener('change', function (event) {
+    bits = clampBits(event.target.value);
+    render();
+  });
+  get('bits').addEventListener('input', function (event) {
+    if (event.target.value !== '' && Number.isFinite(Number(event.target.value))) {
+      bits = clampBits(event.target.value);
+      render();
+    }
+  });
+  document.querySelectorAll('.presets button').forEach(function (button) {
+    button.addEventListener('click', function () {
+      type = button.dataset.type;
+      bits = clampBits(button.dataset.bits);
+      signed = button.dataset.signed === 'true';
+      render();
+    });
+  });
+  render();
+}());
+</script>
+</body>
+</html>
